@@ -7,3 +7,6 @@ class SignUpView(generic.CreateView):
     success_url = reverse_lazy('login')
     template_name = 'registro/registrar.html'
 
+from django.urls import path
+from . import views
+

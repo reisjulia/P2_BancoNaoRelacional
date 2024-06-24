@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat Alpha</title>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+    </head>
+    <body>
+        <div class="chat-container">
+<img src="https://scontent.fsdu31-1.fna.fbcdn.net/v/t39.30808-6/447623785_495461433145267_5162895213854100552_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_ohc=u8PgtODI-UUQ7kNvgE34gdc&_nc_ht=scontent.fsdu31-1.fna&oh=00_AYBLZWHDeU91QaQJKSSwrR79W6aQPJvOr272JGH3CBnNbg&oe=66631F59" alt="">
+            <h1>AlphaVidas Chat</h1>
+            <form action="" onsubmit="sendMessage(event)">
+                <input type="text" id="nameText" placeholder="Informe o seu nome" autocomplete="off"/>
+                <input type="text" id="messageText" placeholder="Informe a sua Mensagem" autocomplete="off"/>
+                <button>ENVIAR</button>
+            </form>
+            <ul id='messages'>
+            </ul>
+        </div>
+        <script>
+            var paciente = Date.now()
+            var ws = new WebSocket(`ws://localhost:8000/ws/${paciente}`);
+            ws.onmessage = function(event) {
+                var messages = document.getElementById('messages')
+                var message = document.createElement('li')
+                var content = document.createTextNode(event.data)
+                message.appendChild(content)
+                messages.appendChild(message)
+            };
+            function sendMessage(event) {
+                var nameInput = document.getElementById("nameText");
+                var messageInput = document.getElementById("messageText");
+                ws.send(`${nameInput.value}: ${messageInput.value}`);
+                messageInput.value = '';
+                event.preventDefault();
+            }
+        </script>
+    </body>
+</html>
